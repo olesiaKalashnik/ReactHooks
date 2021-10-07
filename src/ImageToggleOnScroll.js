@@ -3,6 +3,8 @@ import React, { useRef, useEffect, useState } from 'react';
 export default function ImageToggleOnScroll({ primaryImg, secondaryImg }) {
     const imageRef = useRef(null);
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const [inView, setInView] = useState(false);
 
     const scrollHandler = () => {
@@ -15,13 +17,21 @@ export default function ImageToggleOnScroll({ primaryImg, secondaryImg }) {
     };
 
     useEffect(() => {
+        setIsLoading(false);
+        setInView(isInView());
         window.addEventListener('scroll', scrollHandler);
         return () => window.removeEventListener('scroll', scrollHandler);
     }, []);
 
     return (
         <img
-            src={inView ? secondaryImg : primaryImg}
+            src={
+                isLoading
+                    ? 'static/loading-buffering.gif'
+                    : inView
+                    ? secondaryImg
+                    : primaryImg
+            }
             alt=""
             ref={imageRef}
             style={{ width: '1000px', height: '800px' }}
