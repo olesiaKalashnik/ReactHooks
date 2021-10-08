@@ -34,7 +34,6 @@ export default function ImageToggleOnScroll({ primaryImg, secondaryImg }) {
             }
             alt=""
             ref={imageRef}
-            style={{ width: '1000px', height: '800px' }}
         />
     );
 }
