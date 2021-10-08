@@ -4,18 +4,9 @@ import Menu from './Menu';
 import SpeakerData from './SpeakerData';
 import SpeakerDetail from './SpeakerDetail';
 import { ConfigContext } from './App';
+import speakersReducer from './reducers/SpeakersReducer';
 
 export default function Speakers() {
-    const speakersReducer = (state, action) => {
-        switch (action.type) {
-            case 'setSpeakerList':
-                return action.data;
-
-            default:
-                return state;
-        }
-    };
-    // const [speakerList, setSpeakerList] = useState([]);
     const [speakerList, dispatch] = useReducer(speakersReducer, []);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -37,7 +28,6 @@ export default function Speakers() {
                     return (speakingSaturday && sat) || (speakingSunday && sun);
                 }
             );
-            // setSpeakerList(speakerListServerFilter);
             dispatch({ type: 'setSpeakerList', data: speakerListServerFilter });
         });
         return () => console.log('cleanup');
@@ -71,15 +61,7 @@ export default function Speakers() {
         const sessionId = parseInt(
             event.target.attributes['data-sessionid'].value
         );
-        setSpeakerList(
-            speakerList.map((speaker) => {
-                if (speaker.id === sessionId) {
-                    speaker.favorite = favValue;
-                    return speaker;
-                }
-                return speaker;
-            })
-        );
+        dispatch({ type: favValue ? 'fave' : 'unfave', id: sessionId });
     };
 
     return isLoading ? (
