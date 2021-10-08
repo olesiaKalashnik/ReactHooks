@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useContext,
+    useReducer,
+    useCallback,
+} from 'react';
 import Header from './Header';
 import Menu from './Menu';
 import SpeakerData from './SpeakerData';
@@ -56,13 +62,13 @@ export default function Speakers() {
                       : 0
               );
 
-    const heartFavoriteHandler = (event, favValue) => {
+    const heartFavoriteHandler = useCallback((event, favValue) => {
         event.preventDefault();
         const sessionId = parseInt(
             event.target.attributes['data-sessionid'].value
         );
         dispatch({ type: favValue ? 'fave' : 'unfave', id: sessionId });
-    };
+    }, []);
 
     return isLoading ? (
         <div>Loading...</div>
