@@ -4,6 +4,7 @@ import React, {
     useContext,
     useReducer,
     useCallback,
+    useMemo,
 } from 'react';
 import Header from './Header';
 import Menu from './Menu';
@@ -47,20 +48,24 @@ export default function Speakers() {
         setSpeakingSaturday(!speakingSaturday);
     };
 
-    const speakerListFiltered = isLoading
-        ? []
-        : speakerList
-              .filter(
-                  ({ sat, sun }) =>
-                      (speakingSaturday && sat) || (speakingSunday && sun)
-              )
-              .sort((a, b) =>
-                  a.firstName < b.firstName
-                      ? -1
-                      : a.firstName > b.firstName
-                      ? 1
-                      : 0
-              );
+    const filteredAndSortedSpeakerList = useMemo(
+        () =>
+            speakerList
+                .filter(
+                    ({ sat, sun }) =>
+                        (speakingSaturday && sat) || (speakingSunday && sun)
+                )
+                .sort((a, b) =>
+                    a.firstName < b.firstName
+                        ? -1
+                        : a.firstName > b.firstName
+                        ? 1
+                        : 0
+                ),
+        [speakerList, speakingSunday, speakingSaturday]
+    );
+
+    const speakerListFiltered = isLoading ? [] : filteredAndSortedSpeakerList;
 
     const heartFavoriteHandler = useCallback((event, favValue) => {
         event.preventDefault();
