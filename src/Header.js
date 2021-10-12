@@ -1,4 +1,5 @@
 import React from 'react';
+import EmailValidatingForm from './EmailValidatingForm';
 import SignMeUp from './SignMeUp';
 
 export default function Header() {
@@ -19,7 +20,8 @@ export default function Header() {
                     </div>
                     <h2>Silicon Valley Code Camp</h2>
                     <div className="row col-12 text-lg-right">
-                        <SignMeUp signupCallback={signupCallback} />
+                        {/* <SignMeUp signupCallback={signupCallback} /> */}
+                        <EmailValidatingForm />
                     </div>
                 </div>
             </div>
