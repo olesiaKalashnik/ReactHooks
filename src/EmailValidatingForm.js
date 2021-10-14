@@ -7,7 +7,7 @@ function EmailValidatingForm() {
     const { setEmail, email, setCount, count, emailValid } =
         useEmailValidation(30);
 
-    const { rawNum, setRawNum } = usePhoneNumberValidator();
+    const { phoneNumber, setPhoneNumber } = usePhoneNumberValidator();
 
     return (
         <div className="container">
@@ -15,10 +15,10 @@ function EmailValidatingForm() {
             <div>
                 <div className="content">
                     <input
-                        onChange={(e) => setRawNum(e.target.value)}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
                         type="tel"
                         pattern="[0-9]{3} [0-9]{2}-[0-9]{3}"
-                        value={rawNum}
+                        value={phoneNumber}
                     />
                     &nbsp;&nbsp;&nbsp;
                 </div>

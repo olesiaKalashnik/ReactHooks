@@ -1,6 +1,8 @@
+import axios from 'axios';
+
 const speakersReducer = (state, action) => {
     const setFavoriteStatus = (status) => {
-        return state.map((speaker) => {
+        return state.speakerList.map((speaker) => {
             if (speaker.id === action.id) {
                 speaker.favorite = status;
                 return speaker;
@@ -9,13 +11,17 @@ const speakersReducer = (state, action) => {
         });
     };
 
+    // async function getSpeakers() {
+    //     return await axios.get('/api/speakers').then((resp) => resp.data);
+    // }
+
     switch (action.type) {
         case 'setSpeakerList':
-            return action.data;
+            return { ...state, speakerList: action.data, isLoading: false };
         case 'fave':
-            return setFavoriteStatus(true);
+            return { ...state, speakerList: setFavoriteStatus(true) };
         case 'unfave':
-            return setFavoriteStatus(false);
+            return { ...state, speakerList: setFavoriteStatus(false) };
         default:
             return state;
     }

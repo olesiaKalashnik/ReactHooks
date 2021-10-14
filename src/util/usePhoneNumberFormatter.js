@@ -6,17 +6,25 @@ const usePhoneNumberValidator = () => {
         return regex.test(String(value));
     };
 
+    const isValidNonNumberChar = (char, position) => {
+        const map = { '(': 0, ')': 4, ' ': 5, '-': 9 };
+        return position === map[char];
+    };
+
     const validated = (input) => {
         const validatedVal = String(input)
             .split('')
-            .filter((char) => isNumber(char));
+            .filter(
+                (char, index) =>
+                    isNumber(char) || isValidNonNumberChar(char, index)
+            );
 
         return validatedVal.join('');
     };
 
     const formatNumber = (value) => {
         const val = value.trim().toLowerCase();
-        if (val.length === 10) {
+        if (val.length === 10 && isNumber(val)) {
             const formatted = `(${val.slice(0, 3)}) ${val.slice(
                 3,
                 6
@@ -37,9 +45,9 @@ const usePhoneNumberValidator = () => {
         }
         return numsOnly;
     };
-    const [rawNum, setRawNum] = useReducer(numberReducer, '');
+    const [phoneNumber, setPhoneNumber] = useReducer(numberReducer, '');
 
-    return { rawNum, setRawNum };
+    return { phoneNumber, setPhoneNumber };
 };
 
 export default usePhoneNumberValidator;
