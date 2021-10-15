@@ -13,6 +13,7 @@ export default function Speakers() {
     const globalContext = useContext(GlobalContext);
 
     const { speakerList, isLoading, toggleSpeakerFavorite } = globalContext;
+    
     const handleChangeSunday = () => {
         setSpeakingSunday(!speakingSunday);
     };

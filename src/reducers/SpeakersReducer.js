@@ -1,11 +1,8 @@
-import axios from 'axios';
-
 const speakersReducer = (state, action) => {
     const setFavoriteStatus = (status) => {
         return state.speakerList.map((speaker) => {
             if (speaker.id === action.id) {
-                speaker.favorite = status;
-                return speaker;
+                return {...speaker, favorite: status}
             }
             return speaker;
         });
