@@ -2,7 +2,7 @@ const speakersReducer = (state, action) => {
     const setFavoriteStatus = (status) => {
         return state.speakerList.map((speaker) => {
             if (speaker.id === action.id) {
-                return {...speaker, favorite: status}
+                return { ...speaker, favorite: status };
             }
             return speaker;
         });
@@ -10,7 +10,12 @@ const speakersReducer = (state, action) => {
 
     switch (action.type) {
         case 'setSpeakerList':
-            return { ...state, speakerList: action.data, isLoading: false };
+            return {
+                ...state,
+                speakerList: action.data,
+                isLoading: false,
+                hasErrored: false,
+            };
         case 'fave':
             return { ...state, speakerList: setFavoriteStatus(true) };
         case 'unfave':
@@ -20,6 +25,8 @@ const speakersReducer = (state, action) => {
                 ...state,
                 favoriteClickCount: state.favoriteClickCount + 1,
             };
+        case 'error':
+            return { ...state, hasErrored: true, error: action.error };
 
         default:
             return state;

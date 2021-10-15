@@ -3,7 +3,7 @@ import Header from './Header';
 import Menu from './Menu';
 import SpeakerDetail from './SpeakerDetail';
 import { ConfigContext } from './App';
-import { GlobalContext} from './GlobalState';
+import { GlobalContext } from './GlobalState';
 
 export default function Speakers() {
     const [speakingSaturday, setSpeakingSaturday] = useState(true);
@@ -12,8 +12,9 @@ export default function Speakers() {
     const context = useContext(ConfigContext);
     const globalContext = useContext(GlobalContext);
 
-    const { speakerList, isLoading, toggleSpeakerFavorite } = globalContext;
-    
+    const { speakerList, isLoading, toggleSpeakerFavorite, hasErrored, error } =
+        globalContext;
+
     const handleChangeSunday = () => {
         setSpeakingSunday(!speakingSunday);
     };
@@ -46,7 +47,9 @@ export default function Speakers() {
         toggleSpeakerFavorite(speakerRec);
     }, []);
 
-    return isLoading ? (
+    return hasErrored ? (
+        <div>Error</div>
+    ) : isLoading ? (
         <div>Loading...</div>
     ) : (
         <div>
