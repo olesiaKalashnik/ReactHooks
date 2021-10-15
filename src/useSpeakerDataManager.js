@@ -3,44 +3,60 @@ import axios from 'axios';
 import speakersReducer from './reducers/SpeakersReducer';
 
 const useSpeakerDataManager = () => {
-    const [{ speakerList, isLoading }, dispatch] = useReducer(speakersReducer, {
-        speakerList: [],
-        isLoading: true,
-    });
+    const [{ speakerList, isLoading, favoriteClickCount }, dispatch] =
+        useReducer(speakersReducer, {
+            speakerList: [],
+            isLoading: true,
+            favoriteClickCount: 0,
+        });
 
-    const editSpeakerAsync = async (speakerRec) => {
-        const updatedSpeakerRec = {
-            ...speakerRec,
-            favorite: !speakerRec.favorite,
-        };
-        const res = await axios.put(
-            `/api/speakers/${speakerRec.id}`,
-            updatedSpeakerRec
-        );
-        if (res.status === 200) {
-            speakerRec.favorite === true
-                ? dispatch({ type: 'unfave', id: speakerRec.id })
-                : dispatch({ type: 'fave', id: speakerRec.id });
-        }
+    const incrementFavoriteClickCount = () => {
+        dispatch({ type: 'incrementFavoriteClickCount' });
     };
 
+    
     const toggleSpeakerFavorite = (speakerRec) => {
+        const editSpeakerAsync = async (speakerRec) => {
+            const updatedSpeakerRec = {
+                ...speakerRec,
+                favorite: !speakerRec.favorite,
+            };
+            const res = await axios.put(
+                `/api/speakers/${speakerRec.id}`,
+                updatedSpeakerRec
+            );
+            if (res.status === 200) {
+                speakerRec.favorite === true
+                    ? dispatch({ type: 'unfave', id: speakerRec.id })
+                    : dispatch({ type: 'fave', id: speakerRec.id });
+            }
+        };
+
         editSpeakerAsync(speakerRec);
     };
 
-    const fetchSpeakersAsync = async () => {
-        await axios
-            .get('/api/speakers')
-            .then((res) =>
-                dispatch({ type: 'setSpeakerList', data: res.data })
-            );
-    };
-
+    
     useEffect(() => {
+        const fetchSpeakersAsync = async () => {
+            await axios
+                .get('/api/speakers')
+                .then((res) =>
+                    dispatch({ type: 'setSpeakerList', data: res.data })
+                );
+        };
+        console.log("Use effect is called")
         fetchSpeakersAsync();
         return () => console.log('cleanup');
     }, []);
-    return { speakerList, isLoading, toggleSpeakerFavorite };
+
+
+    return {
+        speakerList,
+        isLoading,
+        favoriteClickCount,
+        incrementFavoriteClickCount,
+        toggleSpeakerFavorite,
+    };
 };
 
 export default useSpeakerDataManager;

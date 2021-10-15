@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from './Home.js';
 import Speakers from './Speakers.js';
+import { GlobalProvider } from './GlobalState'
 
 export const ConfigContext = React.createContext();
 
@@ -15,10 +16,14 @@ const pageToShow = (pageName) => {
     return <div>Not Found</div>;
 };
 
-export default function App({ pageName }) {
+const App = ({ pageName }) => {
     return (
         <ConfigContext.Provider value={configValue}>
-            <div>{pageToShow(pageName)}</div>;
+            <GlobalProvider>
+                <div>{pageToShow(pageName)}</div>
+            </GlobalProvider>
         </ConfigContext.Provider>
     );
 }
+
+export default App;
